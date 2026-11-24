@@ -98,6 +98,15 @@ html:not(.ads) #hypotheek .split{grid-template-columns:minmax(0,1fr)}
 .tip.open{opacity:1;visibility:visible;transform:none}
 .tip p{margin:0 0 6px}.tip ul{margin:0;padding-left:18px}.tip li{margin-bottom:4px}
 @media(prefers-reduced-motion:reduce){.tip{transition:none}}
+.steps{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;margin-bottom:14px;font-size:14px;color:var(--mute)}
+.stepbar{flex:1 1 120px;height:6px;background:var(--line);border-radius:3px;overflow:hidden}.stepbar i{display:block;height:100%;width:25%;background:var(--green);transition:width .2s}
+.link{background:none;border:0;padding:8px 0;min-height:44px;color:var(--gdeep);font:600 14px Inter,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.stepnav{display:flex;justify-content:space-between;gap:10px;margin:14px 0 4px}
+form.stepped .grp:not(.cur){display:none}
+form:not(.stepped) .stepnav{display:none}
+.fill{background:none;border:1.5px solid var(--green);color:var(--gdeep);border-radius:6px;padding:4px 10px;margin:4px 6px 0 0;font:600 13px Inter,sans-serif;cursor:pointer;min-height:32px}
+.fill:hover{background:var(--mist)}
+@media(prefers-reduced-motion:reduce){.stepbar i{transition:none}}
 </style>
 </head>
 <body>
@@ -113,29 +122,31 @@ html:not(.ads) #hypotheek .split{grid-template-columns:minmax(0,1fr)}
 
 <div class="tool">
 <form id="form" autocomplete="off">
-<div class="grp"><p>Je regels bij DUO</p>
+<div class="steps" aria-live="polite"><div class="stepbar"><i id="stepFill"></i></div><span id="stepLbl">Stap 1 van 4</span><button type="button" class="link" id="showAll">Alles tonen</button></div>
+<div class="grp" data-step="1"><p>Je regels bij DUO</p>
 <div class="f"><label for="stelsel">Terugbetalingsregels <button type="button" class="info" aria-expanded="false" aria-controls="iStelsel" aria-label="Uitleg terugbetalingsregels">i</button><small>staat in Mijn DUO bij Mijn schulden</small></label><select id="stelsel"><option value="SF35">SF35 (35 jaar)</option><option value="SF15">SF15 (15 jaar)</option><option value="SF15-oud">SF15-oud (vóór 2012)</option><option value="SF15-lllk">Levenlanglerenkrediet</option></select><div class="tip" role="tooltip" id="iStelsel"><p>DUO kent vier soorten regels. Welke voor jou gelden, zie je in Mijn DUO bij <b>Mijn schulden</b>.</p><ul><li><b>SF35</b>: meestal als je in 2015 of later begon met hbo of universiteit. Je lost in 35 jaar af.</li><li><b>SF15</b>: meestal als je eerder studeerde. Je lost in 15 jaar af.</li><li><b>SF15-oud</b>: de regels van vóór 2012.</li><li><b>Levenlanglerenkrediet</b>: een lening voor een opleiding na je dertigste.</li></ul></div></div>
 <div class="f"><label for="hh">Thuissituatie <button type="button" class="info" aria-expanded="false" aria-controls="iHh" aria-label="Uitleg thuissituatie">i</button></label><select id="hh"><option value="alleen">Alleen</option><option value="partner">Met partner</option><option value="ouder">Alleen met kind</option></select><div class="tip" role="tooltip" id="iHh"><p>DUO rekent met een hogere vrijstelling als je een partner hebt of alleenstaande ouder bent. Dan betaal je minder per maand.</p><ul><li><b>Met partner</b>: je bent getrouwd of geregistreerd partner, of je woont samen en jullie zijn fiscaal partner (bijvoorbeeld met een samenlevingscontract, samen een huis of samen een kind). Het inkomen van je partner telt dan mee.</li><li><b>Alleen met kind</b>: je zorgt minstens zes maanden per jaar voor een kind jonger dan 18 dat op jouw adres staat ingeschreven (bij co-ouderschap minstens de helft), en er woont geen partner bij je.</li><li><b>Alleen</b>: geen van beide.</li></ul></div></div>
 <div class="f" id="rowPartner"><label for="partner">Inkomen partner<small>bruto per jaar</small></label><input id="partner" type="number" step="500" value="0"></div>
 <div class="f" id="rowPartnerMee"><label for="partnerMee">Partnerinkomen laten meetellen?<small>SF15-oud: jouw keuze. Zonder partnerinkomen los je wel alles af.</small></label><select id="partnerMee"><option value="ja">Ja</option><option value="nee">Nee</option></select></div>
 <div class="f" id="rowAanvraag"><label for="aanvraag">Lager maandbedrag aangevraagd?<small>SF15-oud: draagkracht alleen op aanvraag</small></label><select id="aanvraag"><option value="ja">Ja</option><option value="nee">Nee</option></select></div>
 </div>
-<div class="grp"><p>Je schuld</p>
-<div class="f"><label for="debt">Huidige studieschuld<small>zie Mijn DUO</small></label><input id="debt" type="number" step="100" value="35000"></div>
-<div class="f"><label for="r1">Rente (%)<small>jouw percentage staat in Mijn DUO</small></label><input id="r1" type="number" step="0.01" value="2.70"></div>
-<div class="f"><label for="months">Resterende maanden aflosfase</label><input id="months" type="number" step="1" value="400"></div>
+<div class="grp" data-step="2"><p>Je schuld</p>
+<div class="f"><label for="debt">Huidige studieschuld <button type="button" class="info" aria-expanded="false" aria-controls="iDebt" aria-label="Waar vind ik je schuld?">i</button><small>zie Mijn DUO</small></label><input id="debt" type="number" step="100" value="35000"><div class="tip" role="tooltip" id="iDebt"><p><b>Waar vind ik dit?</b> Log in op Mijn DUO en ga naar <b>Mijn schulden</b>. Neem het totaal van je studieschuld inclusief rente.</p><p>Heb je de brief over je maandbedrag? Daar staat het als <b>Hoogte schuld</b> onder "Uw actuele schuld inclusief rente".</p></div></div>
+<div class="f"><label for="r1">Rente (%) <button type="button" class="info" aria-expanded="false" aria-controls="iRente" aria-label="Waar vind ik je rente?">i</button><small>jouw percentage staat in Mijn DUO</small></label><input id="r1" type="number" step="0.01" value="2.70"><div class="tip" role="tooltip" id="iRente"><p><b>Waar vind ik dit?</b> In Mijn DUO bij Mijn schulden, of in de brief over je maandbedrag als <b>Rentepercentage</b>. Je rente staat steeds vijf jaar vast.</p><p>Weet je het niet? <button type="button" class="fill" data-target="r1" data-value="standaard">Gebruik de standaardrente van je regeling</button></p></div></div>
+<div class="f"><label for="months">Resterende maanden aflosfase <button type="button" class="info" aria-expanded="false" aria-controls="iMaanden" aria-label="Waar vind ik het aantal maanden?">i</button></label><input id="months" type="number" step="1" value="400"><div class="tip" role="tooltip" id="iMaanden"><p><b>Waar vind ik dit?</b> In de brief over je maandbedrag als <b>Resterende maanden aflosfase</b>, of in Mijn DUO.</p><p>Ben je net begonnen met aflossen, dan is dit 420 maanden (SF35) of 180 maanden (SF15). Elk jaar gaan er 12 af.</p><p>Weet je het niet? <button type="button" class="fill" data-target="months" data-value="vol">Ga uit van de volle looptijd</button></p></div></div>
 </div>
-<div class="grp"><p>Je inkomen</p>
-<div class="f"><label for="inc">Bruto jaarinkomen nu</label><input id="inc" type="number" step="500" value="45000"></div>
-<div class="f"><label for="grow">Groei bovenop inflatie (%/jaar)<small>periodieken, promotie</small></label><input id="grow" type="number" step="0.5" value="2"></div>
+<div class="grp" data-step="3"><p>Je inkomen</p>
+<div class="f"><label for="inc">Bruto jaarinkomen nu <button type="button" class="info" aria-expanded="false" aria-controls="iInkomen" aria-label="Waar vind ik je inkomen?">i</button></label><input id="inc" type="number" step="500" value="45000"><div class="tip" role="tooltip" id="iInkomen"><p><b>Waar vind ik dit?</b> Op je jaaropgave als <b>fiscaal loon</b>, of je bruto maandsalaris × 12 plus vakantiegeld en eventuele eindejaarsuitkering.</p><p>DUO kijkt naar je inkomen van twee jaar geleden. Ook dat staat in de brief over je maandbedrag, onder "Uw inkomensgegevens".</p></div></div>
+<div class="f"><label for="grow">Groei bovenop inflatie (%/jaar) <button type="button" class="info" aria-expanded="false" aria-controls="iGroei" aria-label="Waar vind ik groei?">i</button><small>periodieken, promotie</small></label><input id="grow" type="number" step="0.5" value="2"><div class="tip" role="tooltip" id="iGroei"><p>Hoeveel je salaris per jaar stijgt <b>naast</b> de cao-verhoging: periodieken in je schaal, of een promotie.</p><p>Zit je nog niet aan de top van je schaal, dan is 2 à 4% per jaar gebruikelijk. Zit je aan de top, vul dan 0 in.</p><p><button type="button" class="fill" data-target="grow" data-value="2">Gebruik 2%</button> <button type="button" class="fill" data-target="grow" data-value="0">Zit aan de top: 0%</button></p></div></div>
 <div class="f"><label for="growYrs">Aantal jaren die groei</label><input id="growYrs" type="number" step="1" value="10"></div>
 <div class="f"><label for="infl">Inflatie / cao (%/jaar)</label><input id="infl" type="number" step="0.1" value="2.5"></div>
 </div>
-<div class="grp"><p>Extra aflossen</p>
-<div class="f"><label for="ex">Extra per jaar</label><input id="ex" type="number" step="50" value="1250"></div>
+<div class="grp" data-step="4"><p>Extra aflossen</p>
+<div class="f"><label for="ex">Extra per jaar <button type="button" class="info" aria-expanded="false" aria-controls="iExtra" aria-label="Waar vind ik het extra bedrag?">i</button></label><input id="ex" type="number" step="50" value="1250"><div class="tip" role="tooltip" id="iExtra"><p>Hoeveel je per jaar <b>bovenop</b> je gewone maandbedrag wilt aflossen.</p><p>Los je af via het IKB of een andere werkgeversregeling? Vraag je HR-afdeling naar het maximum per jaar. Bij het Rijk is dat € 2.000.</p></div></div>
 <div class="f"><label>Hoe betaal je het?</label><div class="seg" role="group" aria-label="Betaalwijze"><button type="button" id="mIkb" aria-pressed="true">Via IKB</button><button type="button" id="mOwn" aria-pressed="false">Eigen geld</button></div></div>
 </div>
-<button type="button" class="btn" id="reset">Voorbeeld herstellen</button>
+<div class="stepnav"><button type="button" class="btn" id="prev">Vorige</button><button type="button" class="btn primary" id="next">Volgende</button></div>
+<button type="button" class="link" id="reset">Voorbeeld herstellen</button>
 </form>
 
 <div class="out" aria-live="polite">
@@ -324,6 +335,26 @@ for(const b of document.querySelectorAll('.info')){
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')for(const o of document.querySelectorAll('.tip.open')){o.classList.remove('open');document.querySelector(`[aria-controls="${o.id}"]`).setAttribute('aria-expanded','false')}});
 document.addEventListener('click',e=>{if(!e.target.closest('.info,.tip'))for(const o of document.querySelectorAll('.tip.open')){o.classList.remove('open');const b=document.querySelector(`[aria-controls="${o.id}"]`);b.setAttribute('aria-expanded','false');b.removeAttribute('data-click')}});
+// stappenplan
+let step=1;const grps=[...document.querySelectorAll('#form .grp')],stepNames=grps.map(g=>g.querySelector('p').textContent);
+function showStep(){
+  const f=$('form'),stepped=f.classList.contains('stepped');
+  grps.forEach((g,i)=>g.classList.toggle('cur',i+1===step));
+  $('stepFill').style.width=(stepped?step/grps.length*100:100)+'%';
+  $('stepLbl').textContent=stepped?`Stap ${step} van ${grps.length}: ${stepNames[step-1]}`:'Alle vragen';
+  $('prev').disabled=step===1;$('prev').style.visibility=step===1?'hidden':'visible';
+  $('next').textContent=step===grps.length?'Klaar':'Volgende';
+  $('showAll').textContent=stepped?'Alles tonen':'Stap voor stap';
+}
+$('form').classList.add('stepped');
+$('prev').addEventListener('click',()=>{if(step>1){step--;showStep()}});
+$('next').addEventListener('click',()=>{if(step<grps.length){step++;showStep();grps[step-1].querySelector('select,input')?.focus({preventScroll:true})}else{$('saldo').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'})}});
+$('showAll').addEventListener('click',()=>{$('form').classList.toggle('stepped');showStep()});
+showStep();
+// "weet ik niet"-knoppen in de uitleg
+for(const b of document.querySelectorAll('.fill'))b.addEventListener('click',e=>{e.preventDefault();const st=R.stelsels[$('stelsel').value],t=b.dataset.target;let val=b.dataset.value;
+  if(val==='standaard')val=st.standaardRente.toFixed(2);if(val==='vol')val=st.aflosjaren*12;
+  $(t).value=val;calc();for(const o of document.querySelectorAll('.tip.open'))o.classList.remove('open')});
 $('form').addEventListener('input',calc);
 $('form').addEventListener('change',calc);
 $('form').addEventListener('submit',e=>e.preventDefault());
