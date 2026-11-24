@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studieschuld aflossen via je IKB: hoe werkt het en loont het?</title>
+<meta name="description" content="Bij het Rijk, gemeenten en provincies kun je je studieschuld belastingvrij aflossen via je IKB. Hoe het werkt, wat de maxima zijn en wanneer het echt loont.">
+<link rel="canonical" href="https://studieschuld-aflossen.nl/studieschuld-aflossen-via-ikb/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:url" content="https://studieschuld-aflossen.nl/studieschuld-aflossen-via-ikb/">
+<meta property="og:title" content="Studieschuld aflossen via je IKB: hoe werkt het en loont het?">
+<meta property="og:description" content="Belastingvrij aflossen via je keuzebudget: de regels per cao, een rekenvoorbeeld en wanneer het echt loont.">
+<meta property="og:image" content="https://studieschuld-aflossen.nl/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/space-grotesk-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/*
+VOICE: helder en eerlijk, als een uitlegstuk op de geldpagina van een krant.
+IDEA: een uitgeschreven antwoord met één rekenvoorbeeld en een tabel per cao.
+PICTURE: het rekenvoorbeeld als twee balken: zelf betalen vs. via IKB.
+COLOUR and TYPE: zelfde als de rekentool: wit/inkt, signaalgroen, Space Grotesk + Inter.
+LAYOUT: één leeskolom, kort antwoord bovenaan, daarna uitleg, tabel, kanttekeningen, bronnen.
+*/
+@font-face{font-family:"Space Grotesk";font-weight:700;font-display:swap;src:url(/fonts/space-grotesk-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:400;font-display:swap;src:url(/fonts/inter-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:600;font-display:swap;src:url(/fonts/inter-latin-600-normal.woff2) format("woff2")}
+:root{color-scheme:light dark;--bg:light-dark(#fff,#07130d);--ink:light-dark(#0b0b10,#eef5f1);--mute:light-dark(#5b6168,#9fb0a7);--line:light-dark(#e3e6e4,#1d2e25);--green:#00a862;--gdeep:light-dark(#00804a,#3fd08f);--mist:light-dark(#eafaf2,#0d2118);--card:light-dark(#fff,#0b1a12)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,.num{font-family:"Space Grotesk",system-ui,sans-serif}
+h1{font-size:clamp(30px,4.6vw,46px);line-height:1.08;margin:0 0 14px;text-wrap:balance}
+h2{font-size:clamp(22px,2.6vw,28px);line-height:1.15;margin:40px 0 10px;text-wrap:balance}
+a{color:var(--gdeep)}
+header{border-bottom:1px solid var(--line)}
+header .in,main,footer .in{max-width:760px;margin:0 auto;padding:0 max(5vw,16px)}
+header .in{display:flex;align-items:center;gap:16px;min-height:64px;flex-wrap:wrap}
+.logo{font:700 19px "Space Grotesk",sans-serif;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px}
+header .cta{margin-left:auto;font-weight:600;font-size:15px}
+main{padding-top:clamp(28px,5vw,56px);padding-bottom:56px}
+.lead{font-size:19px;color:var(--mute);margin:0 0 22px}
+.kort{background:var(--mist);border-left:4px solid var(--green);border-radius:8px;padding:16px 20px;margin:24px 0}
+.kort p{margin:0}
+.kort b{color:var(--ink)}
+.bars{margin:18px 0 6px;display:grid;gap:12px}
+.bar{display:grid;grid-template-columns:minmax(0,9.5em) minmax(0,1fr) auto;gap:12px;align-items:center;font-size:15px}
+.bar .track{height:22px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar .fill{height:100%;background:var(--mute)}
+.bar.ikb .fill{background:var(--green)}
+.bar .v{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.note{font-size:14px;color:var(--mute)}
+table{border-collapse:collapse;width:100%;font-size:15px;margin:12px 0}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+thead th{border-bottom:2px solid var(--ink)}
+td.n{white-space:nowrap;font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto}
+ol li,ul li{margin-bottom:8px}
+.btn{display:inline-block;background:var(--green);color:#fff;text-decoration:none;font:600 16px Inter,sans-serif;padding:12px 18px;border-radius:8px;margin-top:8px}
+.btn:focus-visible,a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.src{font-size:14px;color:var(--mute)}
+.src li{margin-bottom:4px;overflow-wrap:anywhere}
+footer{border-top:1px solid var(--line);padding:28px 0 44px;font-size:14px;color:var(--mute)}
+@media(max-width:600px){.bar{grid-template-columns:minmax(0,1fr) auto}.bar .track{grid-column:1/-1;grid-row:2}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Studieschuld aflossen via je IKB: hoe werkt het en loont het?","inLanguage":"nl","datePublished":"2026-11-24","dateModified":"2026-11-24","mainEntityOfPage":"https://studieschuld-aflossen.nl/studieschuld-aflossen-via-ikb/","image":"https://studieschuld-aflossen.nl/og.png","publisher":{"@type":"Organization","name":"studieschuld-aflossen.nl"}}</script>
+</head>
+<body>
+<header><div class="in">
+<a class="logo" href="/"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#00a862"/><path d="M6 17l5-5 4 4 6-7" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>studieschuld-aflossen.nl</a>
+<a class="cta" href="/#rekentool">Naar de rekentool</a>
+</div></header>
+
+<main>
+<article>
+<h1>Studieschuld aflossen via je IKB: hoe werkt het en loont het?</h1>
+<p class="lead">Werk je bij het Rijk, een gemeente, een provincie of een andere werkgever met een keuzebudget? Dan kun je je studieschuld bij DUO vaak aflossen zonder dat er loonbelasting vanaf gaat. Dat scheelt flink. Maar of extra aflossen loont, hangt van meer af.</p>
+
+<div class="kort"><p><b>Kort antwoord.</b> Via je IKB gaat het hele bedrag naar DUO, in plaats van wat er na belasting overblijft. Dat voordeel is zeker. Of extra aflossen óók loont, hangt af van je inkomen: lost je studieschuld zichzelf niet volledig af binnen de looptijd, dan maak je met extra aflossen vooral het bedrag kleiner dat DUO aan het eind kwijtscheldt.</p></div>
+
+<h2>Hoe werkt het?</h2>
+<p>Je Individueel Keuzebudget (IKB) bestaat bij overheidswerkgevers onder meer uit je vakantiegeld en eindejaarsuitkering. Laat je dat uitbetalen, dan gaat er loonbelasting vanaf. Kies je in plaats daarvan het doel <b>aflossen studieschuld</b>, dan betaalt je werkgever het onbelast uit, binnen de fiscale ruimte die werkgevers daarvoor hebben.</p>
+<p>In de praktijk gaat het meestal zo:</p>
+<ol>
+<li>Je lost een bedrag af bij DUO, bijvoorbeeld met een extra betaling via Mijn DUO.</li>
+<li>Je declareert dat bedrag via het IKB-portaal van je werkgever, met een bewijs van de betaling.</li>
+<li>Je werkgever betaalt het bedrag uit je IKB onbelast aan je terug.</li>
+</ol>
+<p class="note">De precieze werkwijze verschilt per werkgever. Vraag je HR- of salarisadministratie hoe het bij jou gaat, en of je ook je gewone maandtermijnen aan DUO mag declareren.</p>
+
+<h2>Rekenvoorbeeld</h2>
+<p>Stel, je wilt € 1.250 aflossen en je betaalt over je vakantiegeld of eindejaarsuitkering ongeveer 45% belasting.</p>
+<div class="bars" role="img" aria-label="Netto kosten van 1.250 euro aflossen: 1.250 euro uit eigen, al belast geld, ongeveer 690 euro via het IKB">
+<div class="bar"><span>Uit eigen geld</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="v">€ 1.250</span></div>
+<div class="bar ikb"><span>Via je IKB</span><div class="track"><div class="fill" style="width:55%"></div></div><span class="v">± € 690</span></div>
+</div>
+<p class="note">Netto kosten voor jou. Bij 45% belasting had je van € 1.250 bruto IKB ongeveer € 690 netto overgehouden; dat geld geef je op. Je werkelijke tarief hangt af van je inkomen.</p>
+
+<h2>Wat zijn de regels per cao?</h2>
+<p>Stand van november 2026. Kijk altijd in je eigen cao of bij je werkgever.</p>
+<div class="scroll"><table>
+<thead><tr><th>Sector</th><th>Maximum</th><th>Looptijd</th></tr></thead>
+<tbody>
+<tr><td>Rijksoverheid</td><td class="n">€ 2.000 per jaar</td><td>Sinds 2025</td></tr>
+<tr><td>Gemeenten en SGO</td><td class="n">€ 1.250 per jaar</td><td>2026 t/m 2030 (5 jaar, samen max. € 6.250)</td></tr>
+<tr><td>Provincies</td><td class="n">€ 1.250 per jaar</td><td>Max. € 7.500 over zes jaar</td></tr>
+<tr><td>Andere werkgevers</td><td colspan="2">Steeds vaker mogelijk via een keuzebudget of de werkkostenregeling. Vraag het na bij HR.</td></tr>
+</tbody></table></div>
+<p class="note">Bij gemeenten en SGO gaat het om de DUO-schuld door reguliere studiefinanciering.</p>
+
+<h2>Loont het voor jou?</h2>
+<p>Het belastingvoordeel is zeker. De vraag is of je het geld wel moet aflossen. Bij de meeste terugbetalers kijkt DUO naar je inkomen (draagkracht). Verdien je niet genoeg om de schuld binnen 35 jaar (SF35) of 15 jaar (SF15) volledig terug te betalen, dan scheldt DUO de rest kwijt. In dat geval maakt extra aflossen vooral die kwijtschelding kleiner.</p>
+<p>Extra aflossen via je IKB loont het meest als:</p>
+<ul>
+<li>je verwacht de schuld anders ook helemaal terug te betalen, bijvoorbeeld omdat je inkomen nog stijgt of je een partner met inkomen hebt;</li>
+<li>je binnenkort een huis wilt kopen: hypotheekverstrekkers kijken naar je maandlast aan DUO;</li>
+<li>je rente hoog is ten opzichte van wat je spaargeld oplevert.</li>
+</ul>
+<p>Met de rekentool zie je het voor je eigen situatie, ook als je maar een beperkt aantal jaren via je IKB mag aflossen.</p>
+<a class="btn" href="/#rekentool">Reken het uit voor jouw situatie</a>
+
+<h2>Bronnen</h2>
+<ul class="src">
+<li>Rijksoverheid, IKB-doel aflossen studieschuld (max. € 2.000 per jaar): <a href="https://www.p-direkt.nl/informatie-rijkspersoneel-2020/financien/salaris/individueel-keuzebudget-ikb/fiscaal-vriendelijke-doelen">p-direkt.nl</a></li>
+<li>Gemeenten en SGO, eindresultaat cao 2025-2027 (vanaf 1 januari 2026, t/m 31 december 2030, max. € 1.250 per jaar): <a href="https://www.cnv.nl/overheid/gemeenten/cao-gemeenten/nieuws/eindresultaat-cao-onderhandelingen-gemeenten-en-sgo/">cnv.nl</a>, <a href="https://vng.nl/brieven/toelichting-cao-gemeentensgo-2025-2027">vng.nl</a></li>
+<li>Provincies (€ 1.250 per jaar, max. € 7.500 over zes jaar): <a href="https://www.binnenlandsbestuur.nl/carriere/cao/lonen-provincieambtenaren-met-4-procent-omhoog">binnenlandsbestuur.nl</a></li>
+<li>Draagkracht en kwijtschelding: <a href="https://duo.nl/particulier/studieschuld-terugbetalen/berekening-maandbedrag.jsp">duo.nl</a></li>
+</ul>
+</article>
+</main>
+
+<footer><div class="in">
+<p><strong>studieschuld-aflossen.nl</strong> is een onafhankelijke rekentool en heeft niets met DUO te maken. Deze pagina geeft algemene informatie, geen financieel of fiscaal advies. Bijgewerkt: 24 november 2026.</p>
+<p><a href="/">Naar de rekentool</a></p>
+</div></footer>
+</body>
+</html>
