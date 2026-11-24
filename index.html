@@ -212,14 +212,10 @@ form:not(.stepped) .stepnav{display:none}
 <p>Privacy: de rekentool werkt in je eigen browser en verstuurt geen gegevens. <span class="ads-off">Er staan geen advertenties of trackers op deze site.</span><span class="ads-on">Advertenties worden pas geladen nadat je toestemming geeft voor cookies.</span></p>
 </div></footer>
 
+<script src="reken.js"></script>
 <script>
 {
-let R={minimumloonPeiljaar:{bedrag:28405.73},stelsels:{
- 'SF35':{aflosjaren:35,vrijstellingFactor:{alleenstaand:1,partnerOfOuder:1.43},draagkracht:{type:'vast',percentage:.04},minimumDraagkrachtPerMaand:5,partnerinkomenKeuze:false,draagkrachtAutomatisch:true,standaardRente:2.70},
- 'SF15':{aflosjaren:15,vrijstellingFactor:{alleenstaand:.84,partnerOfOuder:1.2},draagkracht:{type:'vast',percentage:.12},minimumDraagkrachtPerMaand:0,partnerinkomenKeuze:false,draagkrachtAutomatisch:true,standaardRente:3.28},
- 'SF15-oud':{aflosjaren:15,vrijstellingFactor:{alleenstaand:.5,partnerOfOuder:1},draagkracht:{type:'schijven',schijven:[{breedte:'0.5*vrijstelling',percentage:.079},{breedte:'0.5*vrijstelling',percentage:.158},{breedte:'2.6*minimumloon-vrijstelling',percentage:.237},{breedte:'rest',percentage:.3}]},minimumDraagkrachtPerMaand:0,partnerinkomenKeuze:true,draagkrachtAutomatisch:false,standaardRente:3.28},
- 'SF15-lllk':{aflosjaren:15,vrijstellingFactor:{alleenstaand:.84,partnerOfOuder:1.2},draagkracht:{type:'vast',percentage:.12},minimumDraagkrachtPerMaand:0,partnerinkomenKeuze:false,draagkrachtAutomatisch:true,standaardRente:2.70}},
- ikb:{standaardBelastingvoordeel:.45}};
+let R=Reken.STANDAARD;
 const ids=['stelsel','hh','partner','partnerMee','aanvraag','debt','r1','months','inc','grow','growYrs','infl','ex','exYrs'];
 const defaults={};ids.forEach(k=>defaults[k]=document.getElementById(k).value);
 let viaIkb=true;
@@ -227,50 +223,10 @@ const $=k=>document.getElementById(k);
 const eur=n=>'€ '+Math.round(n).toLocaleString('nl-NL');
 const v=k=>parseFloat($(k).value)||0;
 
-// jaarlijkse draagkracht volgens de regels van het stelsel
-function draagkrachtJaar(st,toets,vrij,wml){
-  const boven=Math.max(0,toets-vrij);
-  if(st.draagkracht.type==='vast')return st.draagkracht.percentage*boven;
-  let rest=boven,tot=0;
-  for(const s of st.draagkracht.schijven){
-    let b=s.breedte==='rest'?Infinity:s.breedte==='0.5*vrijstelling'?0.5*vrij:Math.max(0,2.6*wml-vrij);
-    const deel=Math.min(rest,b);tot+=deel*s.percentage;rest-=deel;if(rest<=0)break;
-  }
-  return tot;
-}
-
-function sim(p,extra){
-  const st=p.st;let debt=p.debt,ml=p.months,paid=0,ex=0,pv=0,end=null;const pts=[{y:0,d:debt}];
-  const yrsMax=p.volledig?60:Math.ceil(ml/12);
-  for(let t=1;t<=yrsMax&&(ml>0||p.volledig);t++){
-    const i=p.r/12,f=Math.pow(1+p.infl,t);
-    const lag=Math.max(t-2,0);
-    const inc=p.inc*Math.pow(1+p.grow,Math.min(lag,p.growYrs))*Math.pow(1+p.infl,lag);
-    const part=p.partnerTelt?p.partner*Math.pow(1+p.infl,lag):0;
-    const wml=p.wml*Math.pow(1+p.infl,t-1);
-    const vrij=wml*(p.hh==='alleen'?st.vrijstellingFactor.alleenstaand:st.vrijstellingFactor.partnerOfOuder);
-    const restM=Math.max(ml,12);
-    const w=debt>0?(i>0?debt*i/(1-Math.pow(1+i,-restM)):debt/restM):0;
-    let pay=w;
-    if(p.draagkracht){
-      const dk=draagkrachtJaar(st,inc+part,vrij,wml)/12;
-      pay=Math.min(dk,w);
-      if(dk<st.minimumDraagkrachtPerMaand)pay=0;
-    }
-    let yp=0;
-    for(let m=0;m<12;m++){debt*=1+i;const q=Math.min(pay,debt);debt-=q;yp+=q;if(ml>0)ml--;if(debt<=0.005){debt=0;break}}
-    paid+=yp;pv+=yp/f;
-    if(extra>0&&debt>0&&(!p.exYrs||t<=p.exYrs)){const e=Math.min(extra,debt);debt-=e;ex+=e;pv+=e*(viaIkb?1-p.tax:1)/f}
-    pts.push({y:t,d:debt});
-    if(debt<=0.005){end=t;break}
-    if(ml<=0&&!p.volledig)break;
-  }
-  const net=ex*(viaIkb?1-p.tax:1);
-  return{paid,ex,net,total:paid+net,pv,left:p.volledig?0:debt,end,pts};
-}
+const sim=Reken.sim;
 const yr=t=>new Date().getFullYear()+t;
 function list(el,o){
-  const rows=[['Termijnen aan DUO',eur(o.paid)],['Extra afgelost',eur(o.ex)],['Wat het je netto kost',eur(o.total)],[o.end?'Schuld weg in':'Kwijtgescholden',o.end?String(yr(o.end)):eur(o.left)]];
+  const rows=[['Termijnen aan DUO',eur(o.paid)],['Extra afgelost',eur(o.ex)],['Wat het je netto kost',eur(o.total)],["In euro's van nu",eur(o.pv)],[o.end?'Schuld weg in':'Kwijtgescholden',o.end?String(yr(o.end)):eur(o.left)]];
   el.innerHTML=rows.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('');
 }
 function zichtbaar(){
@@ -288,20 +244,20 @@ function calc(){
     volledig:st.partnerinkomenKeuze&&hh==='partner'&&$('partnerMee').value==='nee',
     draagkracht:st.draagkrachtAutomatisch||$('aanvraag').value==='ja',
     wml:R.minimumloonPeiljaar.bedrag,tax:R.ikb.standaardBelastingvoordeel,
-    debt:v('debt'),r:v('r1')/100,months:Math.max(1,Math.round(v('months'))),inc:v('inc'),grow:v('grow')/100,growYrs:Math.max(0,Math.round(v('growYrs'))),infl:v('infl')/100,exYrs:Math.max(0,Math.round(v('exYrs')))};
+    debt:v('debt'),r:v('r1')/100,months:Math.max(1,Math.round(v('months'))),inc:v('inc'),grow:v('grow')/100,growYrs:Math.max(0,Math.round(v('growYrs'))),infl:v('infl')/100,viaIkb,exYrs:Math.max(0,Math.round(v('exYrs')))};
   const a=sim(p,0),b=sim(p,v('ex'));last={a,b};
   list($('c0'),a);list($('c1'),b);
   const d=a.total-b.total,dpv=a.pv-b.pv;
-  $('saldo').classList.toggle('neg',d<0);
-  $('sLbl').textContent=d>=0?'Netto voordeel van extra aflossen':'Netto nadeel van extra aflossen';
-  $('big').textContent=eur(Math.abs(d));
-  const now=`Omgerekend naar euro's van nu: ${dpv>=0?'voordeel':'nadeel'} van ${eur(Math.abs(dpv))}.`;
+  $('saldo').classList.toggle('neg',dpv<0);
+  $('sLbl').textContent=dpv>=0?"Netto voordeel van extra aflossen, in euro's van nu":"Netto nadeel van extra aflossen, in euro's van nu";
+  $('big').textContent=eur(Math.abs(dpv));
+  const nom=`Opgeteld over de hele looptijd, zonder rekening te houden met inflatie: ${d>=0?'voordeel':'nadeel'} van ${eur(Math.abs(d))}.`;
   let t;
   if(b.ex===0)t='Vul een extra bedrag per jaar in om te vergelijken.';
-  else if(p.volledig)t=`Zonder partnerinkomen los je onder SF15-oud alles af, ook na 15 jaar. Extra aflossen bespaart dan rente. ${now}`;
-  else if(a.left<=0.005&&d>=0)t=`Je lost de schuld hoe dan ook helemaal af. Extra aflossen bespaart rente. ${now}`;
-  else if(d>=0)t=`Zonder extra zou ${eur(a.left)} worden kwijtgescholden, maar je bespaart meer dan dat aan termijnen. ${now}`;
-  else t=`Je extra aflossingen maken vooral de kwijtschelding kleiner (zonder extra: ${eur(a.left)}). ${now}`;
+  else if(p.volledig)t=`Zonder partnerinkomen los je onder SF15-oud alles af, ook na 15 jaar. Extra aflossen bespaart dan rente. ${nom}`;
+  else if(a.left<=0.005&&dpv>=0)t=`Je lost de schuld hoe dan ook helemaal af. Extra aflossen bespaart rente. ${nom}`;
+  else if(dpv>=0)t=`Zonder extra zou ${eur(a.left)} worden kwijtgescholden, maar je bespaart meer dan dat aan termijnen. ${nom}`;
+  else t=`Je extra aflossingen maken vooral de kwijtschelding kleiner (zonder extra: ${eur(a.left)}). ${nom}`;
   $('sText').textContent=t;
   draw();
 }
