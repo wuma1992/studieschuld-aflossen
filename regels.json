@@ -1,0 +1,15 @@
+{
+  "bijgewerkt": "2026-11-24",
+  "bron": "duo.nl/particulier/studieschuld-terugbetalen/berekening-maandbedrag.jsp",
+  "sf35": {
+    "draagkrachtPercentage": 0.04,
+    "vrijstellingAlleenstaand": { "jaar": 2027, "bedrag": 28407 },
+    "vrijstellingFactorPartner": 1.43,
+    "minimumDraagkrachtPerMaand": 5,
+    "standaardRente": 2.56
+  },
+  "ikb": {
+    "standaardBelastingvoordeel": 0.45,
+    "maxRijk": 2000
+  }
+}
