@@ -40,9 +40,9 @@ nav a:hover{color:var(--gdeep)}
 @media(max-width:880px){.tool{grid-template-columns:minmax(0,1fr)}}
 form{padding:22px clamp(16px,2.5vw,28px)}
 .grp{margin-bottom:16px}.grp>p{font:600 13px Inter,sans-serif;color:var(--mute);margin:0 0 4px}
-.f{display:grid;grid-template-columns:minmax(0,1fr) 9em;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.f{display:grid;grid-template-columns:minmax(0,1fr) minmax(9em,13em);gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
 .f label{font-size:15px;line-height:1.3}.f small{display:block;color:var(--mute);font-size:13px}
-input[type=number]{width:100%;font:inherit;font-size:16px;text-align:right;padding:9px 10px;min-height:44px;border:1.5px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font-variant-numeric:tabular-nums}
+select,input[type=number]{width:100%;font:inherit;font-size:16px;text-align:right;padding:9px 10px;min-height:44px;border:1.5px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font-variant-numeric:tabular-nums}
 .seg{display:flex;gap:6px;flex-wrap:wrap}
 .seg button,.btn{font:600 15px Inter,sans-serif;min-height:44px;padding:8px 14px;border-radius:6px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
 .seg button[aria-pressed=true]{border-color:var(--green);background:var(--mist);color:var(--gdeep)}
@@ -91,13 +91,20 @@ footer p{max-width:80ch}
 <main id="top">
 <section class="band" id="rekentool"><div class="wrap">
 <h1>Extra aflossen op je studieschuld: slim of zonde?</h1>
-<p class="lead">Betaal je terug naar draagkracht, dan scheldt DUO na 35 jaar kwijt wat er nog over is. Extra aflossen loont dus alleen als je de schuld anders ook helemaal zou terugbetalen. Reken het in een minuut uit.</p>
+<p class="lead">Betaal je terug naar draagkracht, dan scheldt DUO na 15 of 35 jaar kwijt wat er nog over is. Extra aflossen loont dus alleen als je de schuld anders ook helemaal zou terugbetalen. Reken het in een minuut uit.</p>
 
 <div class="tool">
 <form id="form" autocomplete="off">
+<div class="grp"><p>Je regels bij DUO</p>
+<div class="f"><label for="stelsel">Terugbetalingsregels<small>staat in Mijn DUO bij Mijn schulden</small></label><select id="stelsel"><option value="SF35">SF35 (35 jaar)</option><option value="SF15">SF15 (15 jaar)</option><option value="SF15-oud">SF15-oud (vóór 2012)</option><option value="SF15-lllk">Levenlanglerenkrediet</option></select></div>
+<div class="f"><label for="hh">Thuissituatie</label><select id="hh"><option value="alleen">Alleenstaand, geen kinderen</option><option value="partner">Met partner</option><option value="ouder">Alleenstaande ouder</option></select></div>
+<div class="f" id="rowPartner"><label for="partner">Inkomen partner<small>bruto per jaar</small></label><input id="partner" type="number" step="500" value="0"></div>
+<div class="f" id="rowPartnerMee"><label for="partnerMee">Partnerinkomen laten meetellen?<small>SF15-oud: jouw keuze. Zonder partnerinkomen los je wel alles af.</small></label><select id="partnerMee"><option value="ja">Ja</option><option value="nee">Nee</option></select></div>
+<div class="f" id="rowAanvraag"><label for="aanvraag">Lager maandbedrag aangevraagd?<small>SF15-oud: draagkracht alleen op aanvraag</small></label><select id="aanvraag"><option value="ja">Ja</option><option value="nee">Nee</option></select></div>
+</div>
 <div class="grp"><p>Je schuld</p>
 <div class="f"><label for="debt">Huidige studieschuld<small>zie Mijn DUO</small></label><input id="debt" type="number" step="100" value="35000"></div>
-<div class="f"><label for="r1">Rente (%)</label><input id="r1" type="number" step="0.01" value="2.56"></div>
+<div class="f"><label for="r1">Rente (%)<small>jouw percentage staat in Mijn DUO</small></label><input id="r1" type="number" step="0.01" value="2.70"></div>
 <div class="f"><label for="months">Resterende maanden aflosfase</label><input id="months" type="number" step="1" value="400"></div>
 </div>
 <div class="grp"><p>Je inkomen</p>
@@ -105,7 +112,6 @@ footer p{max-width:80ch}
 <div class="f"><label for="grow">Groei bovenop inflatie (%/jaar)<small>periodieken, promotie</small></label><input id="grow" type="number" step="0.5" value="2"></div>
 <div class="f"><label for="growYrs">Aantal jaren die groei</label><input id="growYrs" type="number" step="1" value="10"></div>
 <div class="f"><label for="infl">Inflatie / cao (%/jaar)</label><input id="infl" type="number" step="0.1" value="2.5"></div>
-<div class="f"><label for="partner">Inkomen partner<small>0 als je alleen woont</small></label><input id="partner" type="number" step="500" value="0"></div>
 </div>
 <div class="grp"><p>Extra aflossen</p>
 <div class="f"><label for="ex">Extra per jaar</label><input id="ex" type="number" step="50" value="1250"></div>
@@ -121,18 +127,18 @@ footer p{max-width:80ch}
 <div class="legend"><span><i style="background:var(--ink)"></i>Schuld zonder extra</span><span><i style="background:var(--green)"></i>Schuld met extra</span></div>
 </div>
 </div>
-<p class="demo">Voorbeeldsite: de naam, de advertenties en de hypotheekpartner zijn plaatshouders. De rekentool werkt echt, voor de terugbetaalregels SF35.</p>
+<p class="demo">Voorbeeldsite: de naam, de advertenties en de hypotheekpartner zijn plaatshouders. De rekentool werkt echt, voor alle terugbetalingsregels van DUO (SF35, SF15, SF15-oud en levenlanglerenkrediet).</p>
 
 <div class="ad"><div><b>Advertentie</b>Banner 728 × 90 / 320 × 100 op mobiel</div></div>
 </div></section>
 
 <section class="band mist" id="uitleg"><div class="wrap">
 <h2>Zo werkt terugbetalen naar draagkracht</h2>
-<p class="lead">Voor wie onder SF35 valt (leenstelsel of studievoorschot) zijn drie dingen genoeg om de uitkomst te snappen.</p>
+<p class="lead">DUO kent vier soorten terugbetalingsregels. Welke voor jou gelden, zie je in Mijn DUO bij Mijn schulden.</p>
 <div class="three">
-<div><h3>Je betaalt naar inkomen</h3><p>DUO vraagt nooit meer dan 4% van je inkomen boven de vrijstelling. Die vrijstelling is ongeveer het minimumloon, of 143% daarvan als je een partner hebt. DUO kijkt naar je inkomen van twee jaar eerder.</p></div>
+<div><h3>Je betaalt naar inkomen</h3><p>DUO kijkt naar je inkomen van twee jaar eerder, min een vrijstelling. Van wat overblijft betaal je per jaar maximaal 4% (SF35) of 12% (SF15 en levenlanglerenkrediet). Bij SF15-oud loopt het in schijven op van 7,9% tot 30%, en alleen als je zelf een lager maandbedrag aanvraagt.</p></div>
 <div><h3>Maar nooit meer dan het wettelijke bedrag</h3><p>Het wettelijk maandbedrag is wat nodig is om alles in de resterende maanden af te lossen. Het laagste van de twee bedragen is wat je betaalt.</p></div>
-<div><h3>Wat over is, vervalt</h3><p>Is je schuld na de aflosfase niet weg, dan scheldt DUO de rest kwijt. Daarom maakt extra aflossen soms alleen die kwijtschelding kleiner.</p></div>
+<div><h3>Wat over is, vervalt</h3><p>Is je schuld na de aflosfase van 35 of 15 jaar niet weg, dan scheldt DUO de rest kwijt. Daarom maakt extra aflossen soms alleen die kwijtschelding kleiner. Uitzondering: kies je bij SF15-oud om het inkomen van je partner niet mee te tellen, dan los je alles af.</p></div>
 </div>
 </div></section>
 
@@ -162,7 +168,8 @@ footer p{max-width:80ch}
 
 <section class="band" id="vragen"><div class="wrap">
 <h2>Veelgestelde vragen</h2>
-<details><summary>Voor wie klopt deze rekentool?</summary><p>Voor wie onder de terugbetaalregels SF35 valt: je begon na 1 september 2015 met studeren of stapte over naar het leenstelsel. Bij SF15 (oudere studenten) gelden een andere draagkrachtberekening en een aflosperiode van 15 jaar. Welke regels voor jou gelden zie je in Mijn DUO.</p></details>
+<details><summary>Welke terugbetalingsregels heb ik?</summary><p>Dat staat in Mijn DUO bij Mijn schulden. In het kort: begon je in 2015 of later met hbo of universiteit, of na 1 augustus 2023 met studiefinanciering, dan heb je meestal SF35 (35 jaar). Studeerde je eerder, dan heb je meestal SF15 (15 jaar). SF15-oud geldt voor de regels van vóór 2012. Het levenlanglerenkrediet heeft eigen regels (SF15-lllk). Een regeling "SF30" bestaat niet.</p></details>
+<details><summary>Wat zijn de vrijstellingen voor 2027?</summary><p>De vrijstelling is een percentage van het minimumloon. Volgens DUO is die voor terugbetalingsjaar 2027: SF35 € 28.405,73 (alleenstaand) of € 40.620,19 (met partner of alleenstaande ouder); SF15 en levenlanglerenkrediet € 23.860,81 of € 34.086,88; SF15-oud € 14.202,87 of € 28.405,73.</p></details>
 <details><summary>Waarom kijkt DUO naar mijn inkomen van twee jaar geleden?</summary><p>Dat heet het peiljaar. Je maandbedrag voor 2027 is gebaseerd op je inkomen van 2025. Is je inkomen sindsdien flink gedaald, dan kun je DUO vragen naar een later jaar te kijken.</p></details>
 <details><summary>Kan ik niet beter sparen of beleggen?</summary><p>Dat hangt af van je rente bij DUO, wat je zelf aan rendement verwacht en hoe zeker je wilt zijn. Afgeloste schuld krijg je niet terug, geld op een spaarrekening wel. De rekentool kijkt alleen naar wat aflossen je kost en oplevert.</p></details>
 <details><summary>Hoe zit het met de rente na de rentevaste periode?</summary><p>DUO zet de rente telkens voor vijf jaar vast. Daarna kan die hoger of lager uitvallen. Probeer in de rekentool een paar percentages uit: een hogere rente maakt kwijtschelding waarschijnlijker.</p></details>
@@ -177,80 +184,123 @@ footer p{max-width:80ch}
 
 <script>
 {
-const ids=['debt','r1','months','inc','grow','growYrs','infl','partner','ex'];
+let R={minimumloonPeiljaar:{bedrag:28405.73},stelsels:{
+ 'SF35':{aflosjaren:35,vrijstellingFactor:{alleenstaand:1,partnerOfOuder:1.43},draagkracht:{type:'vast',percentage:.04},minimumDraagkrachtPerMaand:5,partnerinkomenKeuze:false,draagkrachtAutomatisch:true,standaardRente:2.70},
+ 'SF15':{aflosjaren:15,vrijstellingFactor:{alleenstaand:.84,partnerOfOuder:1.2},draagkracht:{type:'vast',percentage:.12},minimumDraagkrachtPerMaand:0,partnerinkomenKeuze:false,draagkrachtAutomatisch:true,standaardRente:3.28},
+ 'SF15-oud':{aflosjaren:15,vrijstellingFactor:{alleenstaand:.5,partnerOfOuder:1},draagkracht:{type:'schijven',schijven:[{breedte:'0.5*vrijstelling',percentage:.079},{breedte:'0.5*vrijstelling',percentage:.158},{breedte:'2.6*minimumloon-vrijstelling',percentage:.237},{breedte:'rest',percentage:.3}]},minimumDraagkrachtPerMaand:0,partnerinkomenKeuze:true,draagkrachtAutomatisch:false,standaardRente:3.28},
+ 'SF15-lllk':{aflosjaren:15,vrijstellingFactor:{alleenstaand:.84,partnerOfOuder:1.2},draagkracht:{type:'vast',percentage:.12},minimumDraagkrachtPerMaand:0,partnerinkomenKeuze:false,draagkrachtAutomatisch:true,standaardRente:2.70}},
+ ikb:{standaardBelastingvoordeel:.45}};
+const ids=['stelsel','hh','partner','partnerMee','aanvraag','debt','r1','months','inc','grow','growYrs','infl','ex'];
 const defaults={};ids.forEach(k=>defaults[k]=document.getElementById(k).value);
-let viaIkb=true;let TAX=0.45,VRIJ27=28407,PCT=0.04,PF=1.43,MIN=5;
+let viaIkb=true;
+const $=k=>document.getElementById(k);
 const eur=n=>'€ '+Math.round(n).toLocaleString('nl-NL');
-const v=k=>parseFloat(document.getElementById(k).value)||0;
+const v=k=>parseFloat($(k).value)||0;
+
+// jaarlijkse draagkracht volgens de regels van het stelsel
+function draagkrachtJaar(st,toets,vrij,wml){
+  const boven=Math.max(0,toets-vrij);
+  if(st.draagkracht.type==='vast')return st.draagkracht.percentage*boven;
+  let rest=boven,tot=0;
+  for(const s of st.draagkracht.schijven){
+    let b=s.breedte==='rest'?Infinity:s.breedte==='0.5*vrijstelling'?0.5*vrij:Math.max(0,2.6*wml-vrij);
+    const deel=Math.min(rest,b);tot+=deel*s.percentage;rest-=deel;if(rest<=0)break;
+  }
+  return tot;
+}
 
 function sim(p,extra){
-  let debt=p.debt,ml=p.months,paid=0,ex=0,pv=0,end=null;const pts=[{y:0,d:debt}];
-  const yrs=Math.ceil(ml/12);
-  for(let t=1;t<=yrs&&ml>0;t++){
+  const st=p.st;let debt=p.debt,ml=p.months,paid=0,ex=0,pv=0,end=null;const pts=[{y:0,d:debt}];
+  const yrsMax=p.volledig?60:Math.ceil(ml/12);
+  for(let t=1;t<=yrsMax&&(ml>0||p.volledig);t++){
     const i=p.r/12,f=Math.pow(1+p.infl,t);
-    const gy=Math.min(Math.max(t-2,0),p.growYrs);
-    const inc=p.inc*Math.pow(1+p.grow,gy)*Math.pow(1+p.infl,Math.max(t-2,0));
-    const part=p.partner*Math.pow(1+p.infl,Math.max(t-2,0));
-    const vrij=VRIJ27*Math.pow(1+p.infl,t-1)*(p.partner>0?PF:1);
-    const dk=Math.max(0,PCT*(inc+part-vrij))/12;
-    const w=debt>0?(i>0?debt*i/(1-Math.pow(1+i,-ml)):debt/ml):0;
-    let pay=Math.min(dk,w);if(dk<MIN)pay=0;
+    const lag=Math.max(t-2,0);
+    const inc=p.inc*Math.pow(1+p.grow,Math.min(lag,p.growYrs))*Math.pow(1+p.infl,lag);
+    const part=p.partnerTelt?p.partner*Math.pow(1+p.infl,lag):0;
+    const wml=p.wml*Math.pow(1+p.infl,t-1);
+    const vrij=wml*(p.hh==='alleen'?st.vrijstellingFactor.alleenstaand:st.vrijstellingFactor.partnerOfOuder);
+    const restM=Math.max(ml,12);
+    const w=debt>0?(i>0?debt*i/(1-Math.pow(1+i,-restM)):debt/restM):0;
+    let pay=w;
+    if(p.draagkracht){
+      const dk=draagkrachtJaar(st,inc+part,vrij,wml)/12;
+      pay=Math.min(dk,w);
+      if(dk<st.minimumDraagkrachtPerMaand)pay=0;
+    }
     let yp=0;
-    for(let m=0;m<12&&ml>0;m++){debt*=1+i;const q=Math.min(pay,debt);debt-=q;yp+=q;ml--;if(debt<=0.005){debt=0;break}}
+    for(let m=0;m<12;m++){debt*=1+i;const q=Math.min(pay,debt);debt-=q;yp+=q;if(ml>0)ml--;if(debt<=0.005){debt=0;break}}
     paid+=yp;pv+=yp/f;
-    if(extra>0&&debt>0){const e=Math.min(extra,debt);debt-=e;ex+=e;pv+=e*(viaIkb?1-TAX:1)/f}
+    if(extra>0&&debt>0){const e=Math.min(extra,debt);debt-=e;ex+=e;pv+=e*(viaIkb?1-p.tax:1)/f}
     pts.push({y:t,d:debt});
     if(debt<=0.005){end=t;break}
+    if(ml<=0&&!p.volledig)break;
   }
-  const net=ex*(viaIkb?1-TAX:1);
-  return{paid,ex,net,total:paid+net,pv,left:debt,end,pts};
+  const net=ex*(viaIkb?1-p.tax:1);
+  return{paid,ex,net,total:paid+net,pv,left:p.volledig?0:debt,end,pts};
 }
 const yr=t=>new Date().getFullYear()+t;
 function list(el,o){
   const rows=[['Termijnen aan DUO',eur(o.paid)],['Extra afgelost',eur(o.ex)],['Wat het je netto kost',eur(o.total)],[o.end?'Schuld weg in':'Kwijtgescholden',o.end?String(yr(o.end)):eur(o.left)]];
   el.innerHTML=rows.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('');
 }
+function zichtbaar(){
+  const st=R.stelsels[$('stelsel').value],hh=$('hh').value;
+  $('rowPartner').style.display=hh==='partner'?'':'none';
+  $('rowPartnerMee').style.display=hh==='partner'&&st.partnerinkomenKeuze?'':'none';
+  $('rowAanvraag').style.display=st.draagkrachtAutomatisch?'none':'';
+}
 let last=null;
 function calc(){
-  const p={debt:v('debt'),r:v('r1')/100,months:Math.max(1,Math.round(v('months'))),inc:v('inc'),grow:v('grow')/100,growYrs:Math.max(0,Math.round(v('growYrs'))),infl:v('infl')/100,partner:v('partner')};
+  zichtbaar();
+  const st=R.stelsels[$('stelsel').value],hh=$('hh').value;
+  const partnerTelt=hh==='partner'&&(!st.partnerinkomenKeuze||$('partnerMee').value==='ja');
+  const p={st,hh,partner:v('partner'),partnerTelt,
+    volledig:st.partnerinkomenKeuze&&hh==='partner'&&$('partnerMee').value==='nee',
+    draagkracht:st.draagkrachtAutomatisch||$('aanvraag').value==='ja',
+    wml:R.minimumloonPeiljaar.bedrag,tax:R.ikb.standaardBelastingvoordeel,
+    debt:v('debt'),r:v('r1')/100,months:Math.max(1,Math.round(v('months'))),inc:v('inc'),grow:v('grow')/100,growYrs:Math.max(0,Math.round(v('growYrs'))),infl:v('infl')/100};
   const a=sim(p,0),b=sim(p,v('ex'));last={a,b};
-  list(document.getElementById('c0'),a);list(document.getElementById('c1'),b);
+  list($('c0'),a);list($('c1'),b);
   const d=a.total-b.total,dpv=a.pv-b.pv;
-  const s=document.getElementById('saldo');s.classList.toggle('neg',d<0);
-  document.getElementById('sLbl').textContent=d>=0?'Netto voordeel van extra aflossen':'Netto nadeel van extra aflossen';
-  document.getElementById('big').textContent=eur(Math.abs(d));
+  $('saldo').classList.toggle('neg',d<0);
+  $('sLbl').textContent=d>=0?'Netto voordeel van extra aflossen':'Netto nadeel van extra aflossen';
+  $('big').textContent=eur(Math.abs(d));
   const now=`Omgerekend naar euro's van nu: ${dpv>=0?'voordeel':'nadeel'} van ${eur(Math.abs(dpv))}.`;
   let t;
   if(b.ex===0)t='Vul een extra bedrag per jaar in om te vergelijken.';
+  else if(p.volledig)t=`Zonder partnerinkomen los je onder SF15-oud alles af, ook na 15 jaar. Extra aflossen bespaart dan rente. ${now}`;
   else if(a.left<=0.005&&d>=0)t=`Je lost de schuld hoe dan ook helemaal af. Extra aflossen bespaart rente. ${now}`;
   else if(d>=0)t=`Zonder extra zou ${eur(a.left)} worden kwijtgescholden, maar je bespaart meer dan dat aan termijnen. ${now}`;
   else t=`Je extra aflossingen maken vooral de kwijtschelding kleiner (zonder extra: ${eur(a.left)}). ${now}`;
-  document.getElementById('sText').textContent=t;
+  $('sText').textContent=t;
   draw();
 }
-const svg=document.getElementById('chart');
+const svg=$('chart');
 function draw(){
   if(!last)return;const W=svg.clientWidth,H=svg.clientHeight;if(!W||!H)return;
-  const n=W<520,L=n?40:62,R=8,T=10,B=24;
+  const n=W<520,L=n?40:62,R2=8,T=10,B=24;
   const A=last.a.pts,Bp=last.b.pts,ymax=Math.max(A[A.length-1].y,Bp[Bp.length-1].y,1);
   const max=Math.max(...A.map(q=>q.d),...Bp.map(q=>q.d))*1.08||1;
-  const sx=y=>L+y/ymax*(W-L-R),sy=d=>T+(1-d/max)*(H-T-B);
+  const sx=y=>L+y/ymax*(W-L-R2),sy=d=>T+(1-d/max)*(H-T-B);
   const step=[5000,10000,20000,50000,100000].find(s=>max/s<=5)||200000;let g='';
-  for(let k=0;k<=max;k+=step)g+=`<line x1="${L}" x2="${W-R}" y1="${sy(k)}" y2="${sy(k)}" stroke="var(--line)"/><text x="${L-6}" y="${sy(k)+4}" text-anchor="end" font-size="12" fill="var(--mute)">${n?Math.round(k/1000)+'k':eur(k)}</text>`;
-  const ys=n?10:5;for(let y=ys;y<=ymax;y+=ys)g+=`<text x="${sx(y)}" y="${H-6}" text-anchor="middle" font-size="12" fill="var(--mute)">${yr(y)}</text>`;
+  for(let k=0;k<=max;k+=step)g+=`<line x1="${L}" x2="${W-R2}" y1="${sy(k)}" y2="${sy(k)}" stroke="var(--line)"/><text x="${L-6}" y="${sy(k)+4}" text-anchor="end" font-size="12" fill="var(--mute)">${n?Math.round(k/1000)+'k':eur(k)}</text>`;
+  const ys=ymax>20?(n?10:5):(n?5:2);for(let y=ys;y<=ymax;y+=ys)g+=`<text x="${sx(y)}" y="${H-6}" text-anchor="middle" font-size="12" fill="var(--mute)">${yr(y)}</text>`;
   const path=arr=>arr.map((q,i)=>(i?'L':'M')+sx(q.y).toFixed(1)+' '+sy(q.d).toFixed(1)).join(' ');
   g+=`<path d="${path(A)}" fill="none" stroke="var(--ink)" stroke-width="2.5"/><path d="${path(Bp)}" fill="none" stroke="var(--green)" stroke-width="3"/>`;
   svg.innerHTML=g;
 }
 const ro=new ResizeObserver(draw);ro.observe(svg);
-const mI=document.getElementById('mIkb'),mO=document.getElementById('mOwn');
+const mI=$('mIkb'),mO=$('mOwn');
 const setMode=x=>{viaIkb=x;mI.setAttribute('aria-pressed',x);mO.setAttribute('aria-pressed',!x);calc()};
 mI.addEventListener('click',()=>setMode(true));mO.addEventListener('click',()=>setMode(false));
-document.getElementById('form').addEventListener('input',calc);
-document.getElementById('form').addEventListener('submit',e=>e.preventDefault());
-document.getElementById('reset').addEventListener('click',()=>{ids.forEach(k=>document.getElementById(k).value=defaults[k]);setMode(true)});
+// bij een ander stelsel: rente en looptijd naar de standaard van dat stelsel
+$('stelsel').addEventListener('change',()=>{const st=R.stelsels[$('stelsel').value];$('r1').value=st.standaardRente.toFixed(2);$('months').value=Math.min(v('months'),st.aflosjaren*12)});
+$('form').addEventListener('input',calc);
+$('form').addEventListener('change',calc);
+$('form').addEventListener('submit',e=>e.preventDefault());
+$('reset').addEventListener('click',()=>{ids.forEach(k=>$(k).value=defaults[k]);setMode(true)});
 calc();
-fetch('regels.json').then(r=>r.json()).then(j=>{const a=j.sf35||{};VRIJ27=a.vrijstellingAlleenstaand?.bedrag??VRIJ27;PCT=a.draagkrachtPercentage??PCT;PF=a.vrijstellingFactorPartner??PF;MIN=a.minimumDraagkrachtPerMaand??MIN;TAX=j.ikb?.standaardBelastingvoordeel??TAX;calc()}).catch(()=>{});
+fetch('regels.json').then(r=>r.json()).then(j=>{if(j&&j.stelsels&&j.minimumloonPeiljaar){R=Object.assign({},R,j);R.ikb=Object.assign({standaardBelastingvoordeel:.45},j.ikb||{});calc()}}).catch(()=>{});
 }
 </script>
 </body>
