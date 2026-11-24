@@ -1,15 +1,56 @@
 {
   "bijgewerkt": "2026-11-24",
-  "bron": "duo.nl/particulier/studieschuld-terugbetalen/berekening-maandbedrag.jsp",
-  "sf35": {
-    "draagkrachtPercentage": 0.04,
-    "vrijstellingAlleenstaand": { "jaar": 2027, "bedrag": 28407 },
-    "vrijstellingFactorPartner": 1.43,
-    "minimumDraagkrachtPerMaand": 5,
-    "standaardRente": 2.56
+  "bron": "https://duo.nl/particulier/studieschuld-terugbetalen/berekening-maandbedrag.jsp, https://duo.nl/particulier/studieschuld-terugbetalen/terugbetalingsregels.jsp, https://duo.nl/particulier/home/actueel/rentepercentages-voor-2027-vastgesteld.jsp",
+  "minimumloonPeiljaar": { "terugbetaaljaar": 2027, "bedrag": 28405.73 },
+  "stelsels": {
+    "SF35": {
+      "naam": "SF35 (35 jaar)",
+      "aflosjaren": 35,
+      "vrijstellingFactor": { "alleenstaand": 1.00, "partnerOfOuder": 1.43 },
+      "draagkracht": { "type": "vast", "percentage": 0.04 },
+      "minimumDraagkrachtPerMaand": 5,
+      "partnerinkomenKeuze": false,
+      "draagkrachtAutomatisch": true,
+      "standaardRente": 2.70
+    },
+    "SF15": {
+      "naam": "SF15 (15 jaar)",
+      "aflosjaren": 15,
+      "vrijstellingFactor": { "alleenstaand": 0.84, "partnerOfOuder": 1.20 },
+      "draagkracht": { "type": "vast", "percentage": 0.12 },
+      "minimumDraagkrachtPerMaand": 0,
+      "partnerinkomenKeuze": false,
+      "draagkrachtAutomatisch": true,
+      "standaardRente": 3.28
+    },
+    "SF15-oud": {
+      "naam": "SF15-oud (regels van vóór 2012)",
+      "aflosjaren": 15,
+      "vrijstellingFactor": { "alleenstaand": 0.50, "partnerOfOuder": 1.00 },
+      "draagkracht": {
+        "type": "schijven",
+        "schijven": [
+          { "breedte": "0.5*vrijstelling", "percentage": 0.079 },
+          { "breedte": "0.5*vrijstelling", "percentage": 0.158 },
+          { "breedte": "2.6*minimumloon-vrijstelling", "percentage": 0.237 },
+          { "breedte": "rest", "percentage": 0.30 }
+        ]
+      },
+      "minimumDraagkrachtPerMaand": 0,
+      "partnerinkomenKeuze": true,
+      "draagkrachtAutomatisch": false,
+      "standaardRente": 3.28
+    },
+    "SF15-lllk": {
+      "naam": "Levenlanglerenkrediet (SF15-lllk)",
+      "aflosjaren": 15,
+      "vrijstellingFactor": { "alleenstaand": 0.84, "partnerOfOuder": 1.20 },
+      "draagkracht": { "type": "vast", "percentage": 0.12 },
+      "minimumDraagkrachtPerMaand": 0,
+      "partnerinkomenKeuze": false,
+      "draagkrachtAutomatisch": true,
+      "standaardRente": 2.70
+    }
   },
-  "ikb": {
-    "standaardBelastingvoordeel": 0.45,
-    "maxRijk": 2000
-  }
+  "ikb": { "standaardBelastingvoordeel": 0.45, "maxRijk": 2000 }
 }
