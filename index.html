@@ -143,6 +143,7 @@ form:not(.stepped) .stepnav{display:none}
 </div>
 <div class="grp" data-step="4"><p>Extra aflossen</p>
 <div class="f"><label for="ex">Extra per jaar <button type="button" class="info" aria-expanded="false" aria-controls="iExtra" aria-label="Waar vind ik het extra bedrag?">i</button></label><input id="ex" type="number" step="50" value="1250"><div class="tip" role="tooltip" id="iExtra"><p>Hoeveel je per jaar <b>bovenop</b> je gewone maandbedrag wilt aflossen.</p><p>Los je af via het IKB of een andere werkgeversregeling? Vraag je HR-afdeling naar het maximum per jaar. Bij het Rijk is dat € 2.000.</p></div></div>
+<div class="f"><label for="exYrs">Hoeveel jaar? <button type="button" class="info" aria-expanded="false" aria-controls="iExJaren" aria-label="Uitleg aantal jaren">i</button><small>leeg = elk jaar</small></label><input id="exYrs" type="number" step="1" min="0" placeholder="elk jaar" value=""><div class="tip" role="tooltip" id="iExJaren"><p>Hoeveel jaar je dit extra bedrag aflost. Mag je via je werkgever bijvoorbeeld maar vijf keer gebruikmaken van de regeling, vul dan 5 in.</p><p>Laat je het leeg, dan rekent de tool met elk jaar, tot de schuld weg is.</p><p><button type="button" class="fill" data-target="exYrs" data-value="5">5 jaar</button> <button type="button" class="fill" data-target="exYrs" data-value="">Elk jaar</button></p></div></div>
 <div class="f"><label>Hoe betaal je het?</label><div class="seg" role="group" aria-label="Betaalwijze"><button type="button" id="mIkb" aria-pressed="true">Via IKB</button><button type="button" id="mOwn" aria-pressed="false">Eigen geld</button></div></div>
 </div>
 <div class="stepnav"><button type="button" class="btn" id="prev">Vorige</button><button type="button" class="btn primary" id="next">Volgende</button></div>
@@ -219,7 +220,7 @@ let R={minimumloonPeiljaar:{bedrag:28405.73},stelsels:{
  'SF15-oud':{aflosjaren:15,vrijstellingFactor:{alleenstaand:.5,partnerOfOuder:1},draagkracht:{type:'schijven',schijven:[{breedte:'0.5*vrijstelling',percentage:.079},{breedte:'0.5*vrijstelling',percentage:.158},{breedte:'2.6*minimumloon-vrijstelling',percentage:.237},{breedte:'rest',percentage:.3}]},minimumDraagkrachtPerMaand:0,partnerinkomenKeuze:true,draagkrachtAutomatisch:false,standaardRente:3.28},
  'SF15-lllk':{aflosjaren:15,vrijstellingFactor:{alleenstaand:.84,partnerOfOuder:1.2},draagkracht:{type:'vast',percentage:.12},minimumDraagkrachtPerMaand:0,partnerinkomenKeuze:false,draagkrachtAutomatisch:true,standaardRente:2.70}},
  ikb:{standaardBelastingvoordeel:.45}};
-const ids=['stelsel','hh','partner','partnerMee','aanvraag','debt','r1','months','inc','grow','growYrs','infl','ex'];
+const ids=['stelsel','hh','partner','partnerMee','aanvraag','debt','r1','months','inc','grow','growYrs','infl','ex','exYrs'];
 const defaults={};ids.forEach(k=>defaults[k]=document.getElementById(k).value);
 let viaIkb=true;
 const $=k=>document.getElementById(k);
@@ -259,7 +260,7 @@ function sim(p,extra){
     let yp=0;
     for(let m=0;m<12;m++){debt*=1+i;const q=Math.min(pay,debt);debt-=q;yp+=q;if(ml>0)ml--;if(debt<=0.005){debt=0;break}}
     paid+=yp;pv+=yp/f;
-    if(extra>0&&debt>0){const e=Math.min(extra,debt);debt-=e;ex+=e;pv+=e*(viaIkb?1-p.tax:1)/f}
+    if(extra>0&&debt>0&&(!p.exYrs||t<=p.exYrs)){const e=Math.min(extra,debt);debt-=e;ex+=e;pv+=e*(viaIkb?1-p.tax:1)/f}
     pts.push({y:t,d:debt});
     if(debt<=0.005){end=t;break}
     if(ml<=0&&!p.volledig)break;
@@ -287,7 +288,7 @@ function calc(){
     volledig:st.partnerinkomenKeuze&&hh==='partner'&&$('partnerMee').value==='nee',
     draagkracht:st.draagkrachtAutomatisch||$('aanvraag').value==='ja',
     wml:R.minimumloonPeiljaar.bedrag,tax:R.ikb.standaardBelastingvoordeel,
-    debt:v('debt'),r:v('r1')/100,months:Math.max(1,Math.round(v('months'))),inc:v('inc'),grow:v('grow')/100,growYrs:Math.max(0,Math.round(v('growYrs'))),infl:v('infl')/100};
+    debt:v('debt'),r:v('r1')/100,months:Math.max(1,Math.round(v('months'))),inc:v('inc'),grow:v('grow')/100,growYrs:Math.max(0,Math.round(v('growYrs'))),infl:v('infl')/100,exYrs:Math.max(0,Math.round(v('exYrs')))};
   const a=sim(p,0),b=sim(p,v('ex'));last={a,b};
   list($('c0'),a);list($('c1'),b);
   const d=a.total-b.total,dpv=a.pv-b.pv;
