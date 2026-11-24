@@ -94,10 +94,11 @@ html:not(.ads) #hypotheek .split{grid-template-columns:minmax(0,1fr)}
 .info::after{content:"";position:absolute;inset:-11px}.info{position:relative}
 .info[aria-expanded=true]{border-color:var(--green);color:var(--gdeep);background:var(--mist)}
 .f{position:relative}
-.tip{position:absolute;z-index:20;left:0;top:calc(100% - 4px);width:min(380px,calc(100vw - 32px));background:var(--card);color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--green);border-radius:8px;padding:12px 14px;font-size:14px;line-height:1.5;box-shadow:0 12px 32px rgba(0,0,0,.22);opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .15s,transform .15s,visibility .15s}
+.tip{position:absolute;z-index:20;left:0;top:calc(100% - 4px);width:min(380px,100%);background:var(--card);color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--green);border-radius:8px;padding:12px 14px;font-size:14px;line-height:1.5;box-shadow:0 12px 32px rgba(0,0,0,.22);opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .15s,transform .15s,visibility .15s}
 .tip.open{opacity:1;visibility:visible;transform:none}
 .tip p{margin:0 0 6px}.tip ul{margin:0;padding-left:18px}.tip li{margin-bottom:4px}
 @media(prefers-reduced-motion:reduce){.tip{transition:none}}
+@media(max-width:600px){.f{grid-template-columns:minmax(0,1fr) minmax(8em,11em)}.stepnav .btn{flex:1}.steps{font-size:13px}}
 .steps{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;margin-bottom:14px;font-size:14px;color:var(--mute)}
 .stepbar{flex:1 1 120px;height:6px;background:var(--line);border-radius:3px;overflow:hidden}.stepbar i{display:block;height:100%;width:25%;background:var(--green);transition:width .2s}
 .link{background:none;border:0;padding:8px 0;min-height:44px;color:var(--gdeep);font:600 14px Inter,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
