@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Advertenties en partnerblok aanzetten: voeg class="ads" toe aan <html> -->
 <html lang="nl">
 <head>
 <meta charset="utf-8">
@@ -80,6 +81,10 @@ summary{cursor:pointer;font:600 17px "Space Grotesk",sans-serif;min-height:28px}
 details p{color:var(--mute);margin:10px 0 0;max-width:70ch}
 footer{border-top:1px solid var(--line);padding:32px 0 48px;font-size:14px;color:var(--mute)}
 footer p{max-width:80ch}
+/* advertenties en partnerplekken staan uit tot <html class="ads"> */
+html:not(.ads) .ad,html:not(.ads) .partner,html:not(.ads) .ads-on{display:none}
+html.ads .ads-off{display:none}
+html:not(.ads) #hypotheek .split{grid-template-columns:minmax(0,1fr)}
 </style>
 </head>
 <body>
@@ -127,7 +132,7 @@ footer p{max-width:80ch}
 <div class="legend"><span><i style="background:var(--ink)"></i>Schuld zonder extra</span><span><i style="background:var(--green)"></i>Schuld met extra</span></div>
 </div>
 </div>
-<p class="demo">Voorbeeldsite: de naam, de advertenties en de hypotheekpartner zijn plaatshouders. De rekentool werkt echt, voor alle terugbetalingsregels van DUO (SF35, SF15, SF15-oud en levenlanglerenkrediet).</p>
+<p class="demo">Werkt voor alle terugbetalingsregels van DUO: SF35, SF15, SF15-oud en het levenlanglerenkrediet. Bedragen voor 2027.</p>
 
 <div class="ad"><div><b>Advertentie</b>Banner 728 × 90 / 320 × 100 op mobiel</div></div>
 </div></section>
@@ -178,8 +183,8 @@ footer p{max-width:80ch}
 </main>
 
 <footer><div class="wrap">
-<p><strong>Aflossen of niet?</strong> (werknaam) is een onafhankelijke rekentool en heeft niets met DUO te maken. Bedragen zijn schattingen en geen advies. Regels en bedragen kunnen elk jaar veranderen: controleer je eigen gegevens altijd in Mijn DUO.</p>
-<p>Privacy: de rekentool werkt in je eigen browser en verstuurt geen gegevens. Advertenties worden pas geladen nadat je toestemming geeft voor cookies.</p>
+<p><strong>Aflossen of niet?</strong> is een onafhankelijke rekentool en heeft niets met DUO te maken. Bedragen zijn schattingen en geen advies. Regels en bedragen kunnen elk jaar veranderen: controleer je eigen gegevens altijd in Mijn DUO.</p>
+<p>Privacy: de rekentool werkt in je eigen browser en verstuurt geen gegevens. <span class="ads-off">Er staan geen advertenties of trackers op deze site.</span><span class="ads-on">Advertenties worden pas geladen nadat je toestemming geeft voor cookies.</span></p>
 </div></footer>
 
 <script>

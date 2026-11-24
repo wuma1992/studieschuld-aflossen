@@ -13,3 +13,6 @@ Niet verbonden aan DUO. Uitkomsten zijn schattingen, geen financieel advies.
 
 ## Bijwerken
 Wijzigingen gaan via een pull request. Na het mergen naar `main` zet Cloudflare Pages de site automatisch live.
+
+## Advertenties en partnerplekken
+Staan uit. Aanzetten: zet in `index.html` `class="ads"` op het `<html>`-element. Dan worden de advertentievakken, het hypotheek-partnerblok en de cookietekst in de voettekst zichtbaar. Doe dit pas als er echte advertenties en een cookiebanner zijn.
