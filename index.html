@@ -90,6 +90,11 @@ footer p{max-width:80ch}
 html:not(.ads) .ad,html:not(.ads) .partner,html:not(.ads) .ads-on{display:none}
 html.ads .ads-off{display:none}
 html:not(.ads) #hypotheek .split{grid-template-columns:minmax(0,1fr)}
+.info{display:inline-grid;place-items:center;width:22px;height:22px;min-height:0;padding:0;margin-left:4px;border-radius:50%;border:1.5px solid var(--mute);background:transparent;color:var(--mute);font:600 13px/1 Inter,sans-serif;cursor:pointer;vertical-align:1px}
+.info::after{content:"";position:absolute;inset:-11px}.info{position:relative}
+.info[aria-expanded=true]{border-color:var(--green);color:var(--gdeep);background:var(--mist)}
+.tip{background:var(--mist);border-left:3px solid var(--green);border-radius:6px;padding:10px 14px;margin:6px 0 8px;font-size:14px;line-height:1.5}
+.tip p{margin:0 0 6px}.tip ul{margin:0;padding-left:18px}.tip li{margin-bottom:4px}
 </style>
 </head>
 <body>
@@ -106,8 +111,10 @@ html:not(.ads) #hypotheek .split{grid-template-columns:minmax(0,1fr)}
 <div class="tool">
 <form id="form" autocomplete="off">
 <div class="grp"><p>Je regels bij DUO</p>
-<div class="f"><label for="stelsel">Terugbetalingsregels<small>staat in Mijn DUO bij Mijn schulden</small></label><select id="stelsel"><option value="SF35">SF35 (35 jaar)</option><option value="SF15">SF15 (15 jaar)</option><option value="SF15-oud">SF15-oud (vóór 2012)</option><option value="SF15-lllk">Levenlanglerenkrediet</option></select></div>
-<div class="f"><label for="hh">Thuissituatie</label><select id="hh"><option value="alleen">Alleenstaand, geen kinderen</option><option value="partner">Met partner</option><option value="ouder">Alleenstaande ouder</option></select></div>
+<div class="f"><label for="stelsel">Terugbetalingsregels <button type="button" class="info" aria-expanded="false" aria-controls="iStelsel" aria-label="Uitleg terugbetalingsregels">i</button><small>staat in Mijn DUO bij Mijn schulden</small></label><select id="stelsel"><option value="SF35">SF35 (35 jaar)</option><option value="SF15">SF15 (15 jaar)</option><option value="SF15-oud">SF15-oud (vóór 2012)</option><option value="SF15-lllk">Levenlanglerenkrediet</option></select></div>
+<div class="tip" id="iStelsel" hidden><p>DUO kent vier soorten regels. Welke voor jou gelden, zie je in Mijn DUO bij <b>Mijn schulden</b>.</p><ul><li><b>SF35</b>: meestal als je in 2015 of later begon met hbo of universiteit. Je lost in 35 jaar af.</li><li><b>SF15</b>: meestal als je eerder studeerde. Je lost in 15 jaar af.</li><li><b>SF15-oud</b>: de regels van vóór 2012.</li><li><b>Levenlanglerenkrediet</b>: een lening voor een opleiding na je dertigste.</li></ul></div>
+<div class="f"><label for="hh">Thuissituatie <button type="button" class="info" aria-expanded="false" aria-controls="iHh" aria-label="Uitleg thuissituatie">i</button></label><select id="hh"><option value="alleen">Alleen</option><option value="partner">Met partner</option><option value="ouder">Alleen met kind</option></select></div>
+<div class="tip" id="iHh" hidden><p>DUO rekent met een hogere vrijstelling als je een partner hebt of alleenstaande ouder bent. Dan betaal je minder per maand.</p><ul><li><b>Met partner</b>: je bent getrouwd of geregistreerd partner, of je woont samen en jullie zijn fiscaal partner (bijvoorbeeld met een samenlevingscontract, samen een huis of samen een kind). Het inkomen van je partner telt dan mee.</li><li><b>Alleen met kind</b>: je zorgt minstens zes maanden per jaar voor een kind jonger dan 18 dat op jouw adres staat ingeschreven (bij co-ouderschap minstens de helft), en er woont geen partner bij je.</li><li><b>Alleen</b>: geen van beide.</li></ul></div>
 <div class="f" id="rowPartner"><label for="partner">Inkomen partner<small>bruto per jaar</small></label><input id="partner" type="number" step="500" value="0"></div>
 <div class="f" id="rowPartnerMee"><label for="partnerMee">Partnerinkomen laten meetellen?<small>SF15-oud: jouw keuze. Zonder partnerinkomen los je wel alles af.</small></label><select id="partnerMee"><option value="ja">Ja</option><option value="nee">Nee</option></select></div>
 <div class="f" id="rowAanvraag"><label for="aanvraag">Lager maandbedrag aangevraagd?<small>SF15-oud: draagkracht alleen op aanvraag</small></label><select id="aanvraag"><option value="ja">Ja</option><option value="nee">Nee</option></select></div>
@@ -305,6 +312,7 @@ const setMode=x=>{viaIkb=x;mI.setAttribute('aria-pressed',x);mO.setAttribute('ar
 mI.addEventListener('click',()=>setMode(true));mO.addEventListener('click',()=>setMode(false));
 // bij een ander stelsel: rente en looptijd naar de standaard van dat stelsel
 $('stelsel').addEventListener('change',()=>{const st=R.stelsels[$('stelsel').value];$('r1').value=st.standaardRente.toFixed(2);$('months').value=Math.min(v('months'),st.aflosjaren*12)});
+for(const b of document.querySelectorAll('.info'))b.addEventListener('click',e=>{e.preventDefault();const t=$(b.getAttribute('aria-controls')),open=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',!open);t.hidden=open});
 $('form').addEventListener('input',calc);
 $('form').addEventListener('change',calc);
 $('form').addEventListener('submit',e=>e.preventDefault());
